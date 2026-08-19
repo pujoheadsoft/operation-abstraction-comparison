@@ -1,0 +1,33 @@
+cabal-version: 3.0
+name: operation-abstraction-haskell
+version: 0.1.0.0
+build-type: Simple
+
+common common-settings
+  hs-source-dirs: src
+  default-language: Haskell2010
+  ghc-options: -Wall
+
+executable type-class
+  import: common-settings
+  main-is: TypeClass.hs
+  build-depends: base >=4.18 && <4.20
+
+executable free-monad
+  import: common-settings
+  main-is: FreeMonad.hs
+  build-depends: base >=4.18 && <4.20
+
+executable extensible-effects
+  import: common-settings
+  main-is: ExtensibleEffects.hs
+  build-depends:
+      base >=4.18 && <4.20
+    , freer-simple ==1.2.1.2
+  default-extensions:
+      DataKinds
+    , FlexibleContexts
+    , GADTs
+    , LambdaCase
+    , TypeOperators
+

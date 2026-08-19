@@ -1,0 +1,15 @@
+.build/
+.tools/
+build/
+.koka/
+.bsp/
+.scala-build/
+*.cmi
+*.cmo
+dist-newstyle/
+.stack-work/
+_build/
+target/
+.metals/
+.bloop/
+.cpcache/

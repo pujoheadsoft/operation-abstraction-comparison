@@ -1,0 +1,49 @@
+# 操作の抽象化の比較: 実行可能なコード例
+
+関数型プログラミングにおける9つの操作抽象化方式を、同じ題材で比較するための実行可能なサンプルです。
+すべての例で、`greet userId` は名前を取得し、挨拶を記録してから挨拶文を返します。
+
+```text
+log: greeted Ada
+Hello, Ada!
+```
+
+## プロジェクト構成
+
+各言語は、その言語の標準的なビルドツールで独立して管理します。
+
+| 方式 | 言語 | プロジェクト管理 | 実行コマンド |
+| --- | --- | --- | --- |
+| インターフェース＋実装 | Scala | sbt | `cd scala && sbt run` |
+| 関数群の受け渡し | Gleam | Gleam | `cd gleam && gleam run` |
+| 構造による操作の要求 | OCaml | Dune | `cd ocaml && dune exec ./bin/structural.exe` |
+| 型クラス | Haskell | Stack | `cd haskell && stack exec type-class` |
+| モジュールによるパラメータ化 | OCaml | Dune | `cd ocaml && dune exec ./bin/module_parameter.exe` |
+| マルチメソッド／多重ディスパッチ | Clojure | Clojure CLI | `cd clojure && clojure -M:run` |
+| Freeモナド | Haskell | Stack | `cd haskell && stack exec free-monad` |
+| Extensible Effects | Haskell | Stack + freer-simple | `cd haskell && stack exec extensible-effects` |
+| Algebraic Effects & Handlers | Koka | Koka module | `cd koka && make run` |
+
+HaskellのExtensible Effectsは、自前の符号化ではなく
+[`freer-simple`](https://hackage.haskell.org/package/freer-simple) 1.2.1.2を使用します。
+
+## 必要なツール
+
+- JDK（sbtおよびClojure CLI用）
+- Node.js（GleamのJavaScript target用）
+- Dune / OCaml
+- Stack
+- Cコンパイラ（Koka用）
+- `make`
+
+`scripts/bootstrap-tools.sh` は、sbt、Gleam、Clojure CLI、Kokaを
+プロジェクト内の `.tools/` に導入します。DuneとStackはシステムの標準的な導入方法で用意してください。
+
+```sh
+./scripts/bootstrap-tools.sh
+make verify
+./scripts/verify.sh
+```
+
+`make verify` は各プロジェクトの標準コマンドを通じて、全9例をビルド・実行します。
+`scripts/verify.sh` は加えて、9例すべてが想定した出力を返したことを検査します。

@@ -1,0 +1,6 @@
+resolver: lts-22.43
+packages:
+- .
+
+extra-deps:
+- freer-simple-1.2.1.2@sha256:f4fd265a931d3290113a7036c5fd21b199d509f8f939736be2f992b8023ead5c,3220
