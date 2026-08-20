@@ -20,11 +20,13 @@ Hello, Ada!
 | 型クラス | Haskell | Stack | `cd haskell && stack exec type-class` |
 | モジュールによるパラメータ化 | OCaml | Dune | `cd ocaml && dune exec ./bin/module_parameter.exe` |
 | マルチメソッド／多重ディスパッチ | Clojure | Clojure CLI | `cd clojure && clojure -M:run` |
-| Freeモナド | Haskell | Stack | `cd haskell && stack exec free-monad` |
+| Freeモナド | Haskell | Stack + free | `cd haskell && stack exec free-monad` |
 | Extensible Effects | Haskell | Stack + freer-simple | `cd haskell && stack exec extensible-effects` |
 | Algebraic Effects & Handlers | Koka | Koka module | `cd koka && make run` |
 
-HaskellのExtensible Effectsは、自前の符号化ではなく
+HaskellのFreeモナドは、自前実装ではなく
+[`free`](https://hackage.haskell.org/package/free) 5.2を使用します。
+Extensible Effectsも自前の符号化ではなく
 [`freer-simple`](https://hackage.haskell.org/package/freer-simple) 1.2.1.2を使用します。
 
 ## 必要なツール
