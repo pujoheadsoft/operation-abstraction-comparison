@@ -32,3 +32,4 @@ clojure:
 
 koka:
 	cd koka && $(MAKE) KOKA=$(KOKA) run
+	cd koka && $(MAKE) KOKA=$(KOKA) control-example

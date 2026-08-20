@@ -25,4 +25,15 @@ for line in 'log: greeted Ada' 'Hello, Ada!'; do
   fi
 done
 
+control_before_count=$(grep -Fxc 'before' "$log_file" || true)
+if [ "$control_before_count" -ne 1 ]; then
+  printf 'expected the Koka control example to print before once, got %s\n' "$control_before_count" >&2
+  exit 1
+fi
+
+if grep -Fxq 'after' "$log_file"; then
+  printf 'the Koka control example resumed its continuation unexpectedly\n' >&2
+  exit 1
+fi
+
 printf 'verified: all nine samples produced the expected output\n'
