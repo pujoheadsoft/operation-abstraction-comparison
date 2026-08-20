@@ -19,11 +19,13 @@ if [ ! -x .tools/sbt/bin/sbt ]; then
   tar -xzf .tools/downloads/sbt-1.12.14.tgz -C .tools
 fi
 
-if [ ! -x .tools/bin/gleam ] || [ "$(.tools/bin/gleam --version)" != "gleam 1.18.1" ]; then
-  download .tools/downloads/gleam-v1.18.1.tar.gz \
-    https://github.com/gleam-lang/gleam/releases/download/v1.18.1/gleam-v1.18.1-x86_64-unknown-linux-musl.tar.gz
-  tar -xzf .tools/downloads/gleam-v1.18.1.tar.gz -C .tools/bin
-  chmod +x .tools/bin/gleam
+if [ ! -x .tools/dotnet/dotnet ]; then
+  download .tools/downloads/dotnet-install.sh \
+    https://dot.net/v1/dotnet-install.sh
+  bash .tools/downloads/dotnet-install.sh \
+    --channel 8.0 \
+    --install-dir "$root/.tools/dotnet" \
+    --no-path
 fi
 
 if [ ! -x .tools/clojure/bin/clojure ]; then

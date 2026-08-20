@@ -1,3 +1,5 @@
+import Control.Monad.Free (Free, iterM, liftF)
+
 data NameInstruction next
   = LookupName Int (String -> next)
 
@@ -18,31 +20,11 @@ instance Functor GreetingInstruction where
   fmap f (Name instruction) = Name (fmap f instruction)
   fmap f (Log instruction) = Log (fmap f instruction)
 
-data Free instruction a
-  = Pure a
-  | Suspend (instruction (Free instruction a))
-
-instance Functor instruction => Functor (Free instruction) where
-  fmap f (Pure value) = Pure (f value)
-  fmap f (Suspend instruction) = Suspend (fmap (fmap f) instruction)
-
-instance Functor instruction => Applicative (Free instruction) where
-  pure = Pure
-  Pure f <*> value = fmap f value
-  Suspend instruction <*> value = Suspend (fmap (<*> value) instruction)
-
-instance Functor instruction => Monad (Free instruction) where
-  Pure value >>= continue = continue value
-  Suspend instruction >>= continue = Suspend (fmap (>>= continue) instruction)
-
-liftInstruction :: Functor instruction => instruction a -> Free instruction a
-liftInstruction instruction = Suspend (fmap Pure instruction)
-
 lookupName :: Int -> Free GreetingInstruction String
-lookupName userId = liftInstruction (Name (LookupName userId id))
+lookupName userId = liftF (Name (LookupName userId id))
 
 recordGreeting :: String -> Free GreetingInstruction ()
-recordGreeting name = liftInstruction (Log (RecordGreeting name ()))
+recordGreeting name = liftF (Log (RecordGreeting name ()))
 
 greet :: Int -> Free GreetingInstruction String
 greet userId = do
@@ -51,13 +33,13 @@ greet userId = do
   pure ("Hello, " ++ name ++ "!")
 
 runConsole :: Free GreetingInstruction a -> IO a
-runConsole (Pure value) = pure value
-runConsole (Suspend (Name (LookupName userId continue))) =
-  runConsole (continue (if userId == 1 then "Ada" else "Unknown"))
-runConsole (Suspend (Log (RecordGreeting name next))) = do
-  putStrLn ("log: greeted " ++ name)
-  runConsole next
+runConsole = iterM runInstruction
+  where
+    runInstruction (Name (LookupName userId continue)) =
+      continue (if userId == 1 then "Ada" else "Unknown")
+    runInstruction (Log (RecordGreeting name next)) = do
+      putStrLn ("log: greeted " ++ name)
+      next
 
 main :: IO ()
 main = runConsole (greet 1) >>= putStrLn
-

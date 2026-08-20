@@ -15,7 +15,7 @@ Hello, Ada!
 | 方式 | 言語 | プロジェクト管理 | 実行コマンド |
 | --- | --- | --- | --- |
 | インターフェース＋実装 | Scala | sbt | `cd scala && sbt run` |
-| 関数群の受け渡し | Gleam | Gleam | `cd gleam && gleam run` |
+| 関数群の受け渡し | F# | .NET SDK | `cd fsharp && dotnet run` |
 | 構造による操作の要求 | OCaml | Dune | `cd ocaml && dune exec ./bin/structural.exe` |
 | 型クラス | Haskell | Stack | `cd haskell && stack exec type-class` |
 | モジュールによるパラメータ化 | OCaml | Dune | `cd ocaml && dune exec ./bin/module_parameter.exe` |
@@ -30,13 +30,13 @@ HaskellのExtensible Effectsは、自前の符号化ではなく
 ## 必要なツール
 
 - JDK（sbtおよびClojure CLI用）
-- Node.js（GleamのJavaScript target用）
+- .NET SDK 8.0（F#用）
 - Dune / OCaml
 - Stack
 - Cコンパイラ（Koka用）
 - `make`
 
-`scripts/bootstrap-tools.sh` は、sbt、Gleam、Clojure CLI、Kokaを
+`scripts/bootstrap-tools.sh` は、sbt、.NET SDK、Clojure CLI、Kokaを
 プロジェクト内の `.tools/` に導入します。DuneとStackはシステムの標準的な導入方法で用意してください。
 
 ```sh
