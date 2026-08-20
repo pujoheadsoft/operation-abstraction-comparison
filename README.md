@@ -47,5 +47,12 @@ make verify
 ./scripts/verify.sh
 ```
 
-`make verify` は各プロジェクトの標準コマンドを通じて、全9例をビルド・実行します。
-`scripts/verify.sh` は加えて、9例すべてが想定した出力を返したことを検査します。
+`make verify` は各プロジェクトの標準コマンドを通じて、9方式の共通サンプルに加え、Kokaの制御フローの補助例もビルド・実行します。
+`scripts/verify.sh` は、9つの共通サンプルが想定した出力を返すことに加え、Kokaの補助例で`stop`より後の処理が実行されないことも検査します。
+
+Kokaの制御フローの補助例だけを実行する場合は、次を実行します。
+
+```sh
+cd koka
+make control-example
+```
