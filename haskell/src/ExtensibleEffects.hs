@@ -1,36 +1,33 @@
 import Control.Monad.Freer
 
-data NameEffect a where
-  LookupName :: Int -> NameEffect String
+data Discount a where
+  DiscountAmount :: Int -> Discount Int
 
-data LogEffect a where
-  RecordGreeting :: String -> LogEffect ()
+data Shipping a where
+  ShippingFee :: Int -> Shipping Int
 
-lookupName :: Member NameEffect effects => Int -> Eff effects String
-lookupName userId = send (LookupName userId)
+discountAmount :: Member Discount effects => Int -> Eff effects Int
+discountAmount subtotal = send (DiscountAmount subtotal)
 
-recordGreeting :: Member LogEffect effects => String -> Eff effects ()
-recordGreeting name = send (RecordGreeting name)
+shippingFee :: Member Shipping effects => Int -> Eff effects Int
+shippingFee subtotal = send (ShippingFee subtotal)
 
-greet :: (Member NameEffect effects, Member LogEffect effects) => Int -> Eff effects String
-greet userId = do
-  name <- lookupName userId
-  recordGreeting name
-  pure ("Hello, " ++ name ++ "!")
+calculateTotal :: (Member Discount effects, Member Shipping effects) => Int -> Eff effects Int
+calculateTotal subtotal = do
+  discount <- discountAmount subtotal
+  shipping <- shippingFee subtotal
+  pure (subtotal - discount + shipping)
 
-handleNames :: Eff (NameEffect ': effects) a -> Eff effects a
-handleNames = interpret $ \case
-  LookupName userId -> pure (if userId == 1 then "Ada" else "Unknown")
+handleDiscount :: Eff (Discount ': effects) a -> Eff effects a
+handleDiscount = interpret $ \case
+  DiscountAmount subtotal -> pure (subtotal `div` 10)
 
-handleLogs :: Eff '[LogEffect, IO] a -> Eff '[IO] a
-handleLogs = interpretM runLog
-  where
-    runLog :: LogEffect value -> IO value
-    runLog (RecordGreeting name) = putStrLn ("log: greeted " ++ name)
+handleShipping :: Eff (Shipping ': effects) a -> Eff effects a
+handleShipping = interpret $ \case
+  ShippingFee subtotal -> pure (if subtotal >= 5000 then 0 else 500)
 
-program :: Eff '[NameEffect, LogEffect, IO] String
-program = greet 1
+program :: Eff '[Discount, Shipping] Int
+program = calculateTotal 3000
 
 main :: IO ()
-main = runM (handleLogs (handleNames program)) >>= putStrLn
-
+main = print (run (handleShipping (handleDiscount program)))

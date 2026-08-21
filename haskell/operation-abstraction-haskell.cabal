@@ -12,6 +12,7 @@ executable type-class
   import: common-settings
   main-is: TypeClass.hs
   build-depends: base >=4.18 && <4.20
+  default-extensions: FlexibleInstances
 
 executable free-monad
   import: common-settings

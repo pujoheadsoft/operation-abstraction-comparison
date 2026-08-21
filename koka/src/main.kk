@@ -1,30 +1,28 @@
-effect name-lookup {
-  ctl lookup-name(user-id : int) : string
+effect discount {
+  ctl discount-amount(subtotal : int) : int
 }
 
-effect greeting-recorder {
-  ctl record-greeting(name : string) : ()
+effect shipping {
+  ctl shipping-fee(subtotal : int) : int
 }
 
-fun greet(user-id : int) : <name-lookup,greeting-recorder> string {
-  val name = lookup-name(user-id)
-  record-greeting(name)
-  "Hello, " ++ name ++ "!"
+fun calculate-total(subtotal : int) : <discount,shipping> int {
+  val discount = discount-amount(subtotal)
+  val shipping = shipping-fee(subtotal)
+  subtotal - discount + shipping
 }
 
-fun run-console(action : () -> <name-lookup,greeting-recorder> string) : io string {
+fun run-standard-pricing(action : () -> <discount,shipping> int) : int {
   with handler
-    ctl lookup-name(user-id) ->
-      resume(if user-id == 1 then "Ada" else "Unknown")
+    ctl discount-amount(subtotal) ->
+      resume(subtotal / 10)
   with handler
-    ctl record-greeting(name) -> {
-      println("log: greeted " ++ name)
-      resume(())
-    }
+    ctl shipping-fee(subtotal) ->
+      resume(if subtotal >= 5000 then 0 else 500)
   action()
 }
 
 fun main() {
-  val message = run-console(fn() { greet(1) })
-  println(message)
+  val total = run-standard-pricing(fn() { calculate-total(3000) })
+  println(show(total))
 }

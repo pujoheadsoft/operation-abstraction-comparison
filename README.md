@@ -1,15 +1,18 @@
 # 操作の抽象化の比較: 実行可能なコード例
 
-関数型プログラミングにおける8つのアプローチを、同じ題材で比較するための実行可能なサンプルです。
-すべての例で、`greet userId` は名前を取得し、挨拶を記録してから挨拶文を返します。
+関数型プログラミングにおける6つのアプローチを、同じ題材で比較するための実行可能なサンプルです。
+すべての例で、`calculateTotal subtotal` は割引額と送料を求め、合計額を返します。
 
-ここでの8つは、同一カテゴリの言語機構を分類したものではありません。
-「操作の利用側を具体的な実装から切り離す」という共通の設計問題に対する、異なるアプローチを比較しています。
+ここでの6つは、同一カテゴリの言語機構を分類したものではありません。
+「抽象的な操作を利用する計算を、具体的な意味から切り離してどのように表現し、後から意味付けするか」という共通の設計問題に対する、異なるアプローチを比較しています。
+操作は副作用に限定されません。この題材の`discountAmount`と`shippingFee`は、純粋な計算として扱います。
 各言語はそのアプローチを簡潔・自然に示すための例であり、その言語固有の方式だという意味ではありません。
 
+共通題材では、`subtotal = 3000` に対して割引額を小計の10%（`300`）、送料を`500`として、
+`subtotal - discountAmount subtotal + shippingFee subtotal` により合計額`3200`を求めます。
+
 ```text
-log: greeted Ada
-Hello, Ada!
+3200
 ```
 
 ## プロジェクト構成
@@ -20,9 +23,7 @@ Hello, Ada!
 | --- | --- | --- | --- |
 | インターフェース＋実装 | Scala | sbt | `cd scala && sbt run` |
 | 関数の受け渡し | F# | .NET SDK | `cd fsharp && dotnet run` |
-| 構造による操作の要求 | OCaml | Dune | `cd ocaml && dune exec ./bin/structural.exe` |
-| 型クラス | Haskell | Stack | `cd haskell && stack exec type-class` |
-| マルチメソッド | Clojure | Clojure CLI | `cd clojure && clojure -M:run` |
+| 型クラスを使った抽象的な計算 | Haskell | Stack | `cd haskell && stack exec type-class` |
 | Freeモナド | Haskell | Stack + free | `cd haskell && stack exec free-monad` |
 | Extensible Effects | Haskell | Stack + freer-simple | `cd haskell && stack exec extensible-effects` |
 | Algebraic Effects & Handlers | Koka | Koka module | `cd koka && make run` |
@@ -34,14 +35,13 @@ Extensible Effectsも自前の符号化ではなく
 
 ## 必要なツール
 
-- JDK（sbtおよびClojure CLI用）
+- JDK（sbt用）
 - .NET SDK 8.0（F#用）
-- Dune / OCaml
 - Stack
 - Cコンパイラ（Koka用）
 - `make`
 
-`scripts/bootstrap-tools.sh` は、sbt、.NET SDK、Clojure CLI、Kokaを
+`scripts/bootstrap-tools.sh` は、sbt、.NET SDK、Kokaを
 プロジェクト内の `.tools/` に導入します。DuneとStackはシステムの標準的な導入方法で用意してください。
 
 ```sh
@@ -50,8 +50,8 @@ make verify
 ./scripts/verify.sh
 ```
 
-`make verify` は各プロジェクトの標準コマンドを通じて、8アプローチの共通サンプルに加え、Kokaの制御フローの補助例もビルド・実行します。
-`scripts/verify.sh` は、8つの共通サンプルが想定した出力を返すことに加え、Kokaの補助例で`stop`より後の処理が実行されないことも検査します。
+`make verify` は各プロジェクトの標準コマンドを通じて、6アプローチの共通サンプルに加え、Kokaの制御フローの補助例もビルド・実行します。
+`scripts/verify.sh` は、6つの共通サンプルが`3200`を返すことに加え、Kokaの補助例で`stop`より後の処理が実行されないことも検査します。
 
 Kokaの制御フローの補助例だけを実行する場合は、次を実行します。
 

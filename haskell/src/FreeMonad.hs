@@ -1,45 +1,45 @@
 import Control.Monad.Free (Free, iterM, liftF)
+import Data.Functor.Identity (Identity, runIdentity)
 
-data NameInstruction next
-  = LookupName Int (String -> next)
+data DiscountInstruction next
+  = DiscountAmount Int (Int -> next)
 
-instance Functor NameInstruction where
-  fmap f (LookupName userId continue) = LookupName userId (f . continue)
+instance Functor DiscountInstruction where
+  fmap f (DiscountAmount subtotal continue) = DiscountAmount subtotal (f . continue)
 
-data LogInstruction next
-  = RecordGreeting String next
+data ShippingInstruction next
+  = ShippingFee Int (Int -> next)
 
-instance Functor LogInstruction where
-  fmap f (RecordGreeting name next) = RecordGreeting name (f next)
+instance Functor ShippingInstruction where
+  fmap f (ShippingFee subtotal continue) = ShippingFee subtotal (f . continue)
 
-data GreetingInstruction next
-  = Name (NameInstruction next)
-  | Log (LogInstruction next)
+data PricingInstruction next
+  = Discount (DiscountInstruction next)
+  | Shipping (ShippingInstruction next)
 
-instance Functor GreetingInstruction where
-  fmap f (Name instruction) = Name (fmap f instruction)
-  fmap f (Log instruction) = Log (fmap f instruction)
+instance Functor PricingInstruction where
+  fmap f (Discount instruction) = Discount (fmap f instruction)
+  fmap f (Shipping instruction) = Shipping (fmap f instruction)
 
-lookupName :: Int -> Free GreetingInstruction String
-lookupName userId = liftF (Name (LookupName userId id))
+discountAmount :: Int -> Free PricingInstruction Int
+discountAmount subtotal = liftF (Discount (DiscountAmount subtotal id))
 
-recordGreeting :: String -> Free GreetingInstruction ()
-recordGreeting name = liftF (Log (RecordGreeting name ()))
+shippingFee :: Int -> Free PricingInstruction Int
+shippingFee subtotal = liftF (Shipping (ShippingFee subtotal id))
 
-greet :: Int -> Free GreetingInstruction String
-greet userId = do
-  name <- lookupName userId
-  recordGreeting name
-  pure ("Hello, " ++ name ++ "!")
+calculateTotal :: Int -> Free PricingInstruction Int
+calculateTotal subtotal = do
+  discount <- discountAmount subtotal
+  shipping <- shippingFee subtotal
+  pure (subtotal - discount + shipping)
 
-runConsole :: Free GreetingInstruction a -> IO a
-runConsole = iterM runInstruction
+runPricing :: Free PricingInstruction a -> Identity a
+runPricing = iterM runInstruction
   where
-    runInstruction (Name (LookupName userId continue)) =
-      continue (if userId == 1 then "Ada" else "Unknown")
-    runInstruction (Log (RecordGreeting name next)) = do
-      putStrLn ("log: greeted " ++ name)
-      next
+    runInstruction (Discount (DiscountAmount subtotal continue)) =
+      continue (subtotal `div` 10)
+    runInstruction (Shipping (ShippingFee subtotal continue)) =
+      continue (if subtotal >= 5000 then 0 else 500)
 
 main :: IO ()
-main = runConsole (greet 1) >>= putStrLn
+main = print (runIdentity (runPricing (calculateTotal 3000)))

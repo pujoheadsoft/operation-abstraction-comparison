@@ -28,17 +28,6 @@ if [ ! -x .tools/dotnet/dotnet ]; then
     --no-path
 fi
 
-if [ ! -x .tools/clojure/bin/clojure ]; then
-  download .tools/downloads/linux-install-1.12.5.1654.sh \
-    https://download.clojure.org/install/linux-install-1.12.5.1654.sh
-  install_temp_dir=$(mktemp -d)
-  (
-    cd "$install_temp_dir"
-    bash "$root/.tools/downloads/linux-install-1.12.5.1654.sh" --prefix "$root/.tools/clojure"
-  )
-  rmdir "$install_temp_dir"
-fi
-
 if [ ! -x .tools/koka/bin/koka ]; then
   download .tools/downloads/koka-v3.2.3-linux-x64.tar.gz \
     https://github.com/koka-lang/koka/releases/download/v3.2.3/koka-v3.2.3-linux-x64.tar.gz

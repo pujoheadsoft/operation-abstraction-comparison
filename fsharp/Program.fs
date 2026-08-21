@@ -1,22 +1,21 @@
-let greet
-    (lookupName: int -> string)
-    (recordGreeting: string -> unit)
-    (userId: int)
-    : string =
-    let name = lookupName userId
-    recordGreeting name
-    $"Hello, {name}!"
+let calculateTotal
+    (discountAmount: int -> int)
+    (shippingFee: int -> int)
+    (subtotal: int)
+    : int =
+    let discount = discountAmount subtotal
+    let shipping = shippingFee subtotal
+    subtotal - discount + shipping
 
-let lookupNameFromMemory: int -> string =
-    fun userId ->
-        if userId = 1 then "Ada" else "Unknown"
+let standardDiscountAmount: int -> int =
+    fun subtotal -> subtotal / 10
 
-let recordGreetingToConsole: string -> unit =
-    fun name ->
-        printfn $"log: greeted {name}"
+let standardShippingFee: int -> int =
+    fun subtotal ->
+        if subtotal >= 5000 then 0 else 500
 
 [<EntryPoint>]
 let main _ =
-    greet lookupNameFromMemory recordGreetingToConsole 1
-    |> printfn "%s"
+    calculateTotal standardDiscountAmount standardShippingFee 3000
+    |> printfn "%d"
     0

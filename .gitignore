@@ -12,6 +12,5 @@ _build/
 target/
 .metals/
 .bloop/
-.cpcache/
 fsharp/bin/
 fsharp/obj/

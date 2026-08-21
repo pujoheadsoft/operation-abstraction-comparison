@@ -14,16 +14,11 @@ fi
 
 cat "$log_file"
 
-expected='log: greeted Ada
-Hello, Ada!'
-
-for line in 'log: greeted Ada' 'Hello, Ada!'; do
-  count=$(grep -Fxc "$line" "$log_file" || true)
-  if [ "$count" -ne 8 ]; then
-    printf 'expected %s occurrences of %s, got %s\n' 8 "$line" "$count" >&2
-    exit 1
-  fi
-done
+total_count=$(grep -Fxc '3200' "$log_file" || true)
+if [ "$total_count" -ne 6 ]; then
+  printf 'expected %s occurrences of the total 3200, got %s\n' 6 "$total_count" >&2
+  exit 1
+fi
 
 control_before_count=$(grep -Fxc 'before' "$log_file" || true)
 if [ "$control_before_count" -ne 1 ]; then
@@ -36,4 +31,4 @@ if grep -Fxq 'after' "$log_file"; then
   exit 1
 fi
 
-printf 'verified: all eight common samples and the Koka control example passed\n'
+printf 'verified: all six common samples and the Koka control example passed\n'
