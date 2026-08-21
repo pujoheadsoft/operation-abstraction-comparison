@@ -42,7 +42,7 @@ Extensible Effectsも自前の符号化ではなく
 - `make`
 
 `scripts/bootstrap-tools.sh` は、sbt、.NET SDK、Kokaを
-プロジェクト内の `.tools/` に導入します。DuneとStackはシステムの標準的な導入方法で用意してください。
+プロジェクト内の `.tools/` に導入します。Stackはシステムの標準的な導入方法で用意してください。
 
 ```sh
 ./scripts/bootstrap-tools.sh
