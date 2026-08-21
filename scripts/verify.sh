@@ -19,8 +19,8 @@ Hello, Ada!'
 
 for line in 'log: greeted Ada' 'Hello, Ada!'; do
   count=$(grep -Fxc "$line" "$log_file" || true)
-  if [ "$count" -ne 9 ]; then
-    printf 'expected %s occurrences of %s, got %s\n' 9 "$line" "$count" >&2
+  if [ "$count" -ne 8 ]; then
+    printf 'expected %s occurrences of %s, got %s\n' 8 "$line" "$count" >&2
     exit 1
   fi
 done
@@ -36,4 +36,4 @@ if grep -Fxq 'after' "$log_file"; then
   exit 1
 fi
 
-printf 'verified: all nine samples produced the expected output\n'
+printf 'verified: all eight common samples and the Koka control example passed\n'

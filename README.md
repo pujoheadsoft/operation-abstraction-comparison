@@ -1,7 +1,11 @@
 # 操作の抽象化の比較: 実行可能なコード例
 
-関数型プログラミングにおける9つの操作抽象化方式を、同じ題材で比較するための実行可能なサンプルです。
+関数型プログラミングにおける8つのアプローチを、同じ題材で比較するための実行可能なサンプルです。
 すべての例で、`greet userId` は名前を取得し、挨拶を記録してから挨拶文を返します。
+
+ここでの8つは、同一カテゴリの言語機構を分類したものではありません。
+「操作の利用側を具体的な実装から切り離す」という共通の設計問題に対する、異なるアプローチを比較しています。
+各言語はそのアプローチを簡潔・自然に示すための例であり、その言語固有の方式だという意味ではありません。
 
 ```text
 log: greeted Ada
@@ -15,11 +19,10 @@ Hello, Ada!
 | 方式 | 言語 | プロジェクト管理 | 実行コマンド |
 | --- | --- | --- | --- |
 | インターフェース＋実装 | Scala | sbt | `cd scala && sbt run` |
-| 関数群の受け渡し | F# | .NET SDK | `cd fsharp && dotnet run` |
+| 関数の受け渡し | F# | .NET SDK | `cd fsharp && dotnet run` |
 | 構造による操作の要求 | OCaml | Dune | `cd ocaml && dune exec ./bin/structural.exe` |
 | 型クラス | Haskell | Stack | `cd haskell && stack exec type-class` |
-| モジュールによるパラメータ化 | OCaml | Dune | `cd ocaml && dune exec ./bin/module_parameter.exe` |
-| マルチメソッド／多重ディスパッチ | Clojure | Clojure CLI | `cd clojure && clojure -M:run` |
+| マルチメソッド | Clojure | Clojure CLI | `cd clojure && clojure -M:run` |
 | Freeモナド | Haskell | Stack + free | `cd haskell && stack exec free-monad` |
 | Extensible Effects | Haskell | Stack + freer-simple | `cd haskell && stack exec extensible-effects` |
 | Algebraic Effects & Handlers | Koka | Koka module | `cd koka && make run` |
@@ -47,8 +50,8 @@ make verify
 ./scripts/verify.sh
 ```
 
-`make verify` は各プロジェクトの標準コマンドを通じて、9方式の共通サンプルに加え、Kokaの制御フローの補助例もビルド・実行します。
-`scripts/verify.sh` は、9つの共通サンプルが想定した出力を返すことに加え、Kokaの補助例で`stop`より後の処理が実行されないことも検査します。
+`make verify` は各プロジェクトの標準コマンドを通じて、8アプローチの共通サンプルに加え、Kokaの制御フローの補助例もビルド・実行します。
+`scripts/verify.sh` は、8つの共通サンプルが想定した出力を返すことに加え、Kokaの補助例で`stop`より後の処理が実行されないことも検査します。
 
 Kokaの制御フローの補助例だけを実行する場合は、次を実行します。
 

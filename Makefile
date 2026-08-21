@@ -19,7 +19,6 @@ fsharp:
 
 ocaml:
 	cd ocaml && dune exec ./bin/structural.exe
-	cd ocaml && dune exec ./bin/module_parameter.exe
 
 haskell:
 	cd haskell && STACK_ROOT=$(STACK_ROOT) stack build

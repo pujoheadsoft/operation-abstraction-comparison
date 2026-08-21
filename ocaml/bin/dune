@@ -1,3 +1,2 @@
-(executables
- (names structural module_parameter))
-
+(executable
+ (name structural))
