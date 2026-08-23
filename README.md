@@ -24,12 +24,12 @@
 | インターフェース＋実装 | Scala | sbt | `cd scala && sbt run` |
 | 関数の受け渡し | F# | .NET SDK | `cd fsharp && dotnet run` |
 | 型クラスを使った抽象的な計算 | Haskell | Stack | `cd haskell && stack exec type-class` |
-| Freeモナド | Haskell | Stack + free | `cd haskell && stack exec free-monad` |
+| Freeモナド | PureScript | Spago + purescript-free | `cd purescript && spago build && node run.mjs` |
 | Extensible Effects | Haskell | Stack + freer-simple | `cd haskell && stack exec extensible-effects` |
 | Algebraic Effects & Handlers | Koka | Koka module | `cd koka && make run` |
 
-HaskellのFreeモナドは、自前実装ではなく
-[`free`](https://hackage.haskell.org/package/free) 5.2を使用します。
+PureScriptのFreeモナドは、命令型自身の`Functor` instanceを書かずに利用できる
+[`purescript-free`](https://pursuit.purescript.org/packages/purescript-free) 7.1.0を使用します。
 Extensible Effectsも自前の符号化ではなく
 [`freer-simple`](https://hackage.haskell.org/package/freer-simple) 1.2.1.2を使用します。
 
@@ -37,12 +37,13 @@ Extensible Effectsも自前の符号化ではなく
 
 - JDK（sbt用）
 - .NET SDK 8.0（F#用）
+- PureScript 0.15.15 / Spago / Node.js
 - Stack
 - Cコンパイラ（Koka用）
 - `make`
 
 `scripts/bootstrap-tools.sh` は、sbt、.NET SDK、Kokaを
-プロジェクト内の `.tools/` に導入します。Stackはシステムの標準的な導入方法で用意してください。
+プロジェクト内の `.tools/` に導入します。Stack、PureScript、Spago、Node.jsはシステムの標準的な導入方法で用意してください。
 
 ```sh
 ./scripts/bootstrap-tools.sh
