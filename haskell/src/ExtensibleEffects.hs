@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 import Control.Monad.Freer
 
 data Discount a where
@@ -26,8 +27,10 @@ handleShipping :: Eff (Shipping ': effects) a -> Eff effects a
 handleShipping = interpret $ \case
   ShippingFee subtotal -> pure (if subtotal >= 5000 then 0 else 500)
 
-program :: Eff '[Discount, Shipping] Int
-program = calculateTotal 3000
-
 main :: IO ()
-main = print (run (handleShipping (handleDiscount program)))
+main =
+  print
+    . run
+    . handleShipping
+    . handleDiscount
+    $ calculateTotal 3000
