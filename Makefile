@@ -20,7 +20,9 @@ fsharp:
 haskell:
 	cd haskell && STACK_ROOT=$(STACK_ROOT) stack build
 	cd haskell && STACK_ROOT=$(STACK_ROOT) stack exec type-class
+	cd haskell && STACK_ROOT=$(STACK_ROOT) stack exec type-class-extended
 	cd haskell && STACK_ROOT=$(STACK_ROOT) stack exec extensible-effects
+	cd haskell && STACK_ROOT=$(STACK_ROOT) stack exec extensible-effects-extended
 
 purescript:
 	cd purescript && XDG_CACHE_HOME=$(SPAGO_CACHE) XDG_CONFIG_HOME=$(SPAGO_CONFIG) spago build
@@ -28,4 +30,5 @@ purescript:
 
 koka:
 	cd koka && $(MAKE) KOKA=$(KOKA) run
+	cd koka && $(MAKE) KOKA=$(KOKA) extended
 	cd koka && $(MAKE) KOKA=$(KOKA) control-example

@@ -14,9 +14,28 @@ executable type-class
   build-depends: base >=4.18 && <4.20
   default-extensions: FlexibleInstances
 
+executable type-class-extended
+  import: common-settings
+  main-is: TypeClassExtended.hs
+  build-depends: base >=4.18 && <4.20
+  default-extensions: FlexibleInstances
+
 executable extensible-effects
   import: common-settings
   main-is: ExtensibleEffects.hs
+  build-depends:
+      base >=4.18 && <4.20
+    , freer-simple ==1.2.1.2
+  default-extensions:
+      DataKinds
+    , FlexibleContexts
+    , GADTs
+    , LambdaCase
+    , TypeOperators
+
+executable extensible-effects-extended
+  import: common-settings
+  main-is: ExtensibleEffectsExtended.hs
   build-depends:
       base >=4.18 && <4.20
     , freer-simple ==1.2.1.2

@@ -14,9 +14,15 @@ fi
 
 cat "$log_file"
 
-total_count=$(grep -Fxc '3200' "$log_file" || true)
-if [ "$total_count" -ne 6 ]; then
-  printf 'expected %s occurrences of the total 3200, got %s\n' 6 "$total_count" >&2
+basic_total_count=$(grep -Fxc '1500' "$log_file" || true)
+if [ "$basic_total_count" -ne 6 ]; then
+  printf 'expected %s occurrences of the basic total 1500, got %s\n' 6 "$basic_total_count" >&2
+  exit 1
+fi
+
+extended_total_count=$(grep -Fxc '1700' "$log_file" || true)
+if [ "$extended_total_count" -ne 6 ]; then
+  printf 'expected %s occurrences of the extended total 1700, got %s\n' 6 "$extended_total_count" >&2
   exit 1
 fi
 
@@ -31,4 +37,4 @@ if grep -Fxq 'after' "$log_file"; then
   exit 1
 fi
 
-printf 'verified: all six common samples and the Koka control example passed\n'
+printf 'verified: all six basic and extended samples and the Koka control example passed\n'

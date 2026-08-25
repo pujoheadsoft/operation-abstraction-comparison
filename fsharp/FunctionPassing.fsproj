@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Basic.fs" />
+    <Compile Include="Extended.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>
